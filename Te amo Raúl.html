@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Carta de Amor Estelar</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at top left, #0a1a2f, #000428, #020111);
+      overflow: hidden;
+      font-family: 'Georgia', serif;
+      flex-direction: column;
+      transition: background 2s ease-in-out;
+    }
+
+    /* Texto como estrellas */
+    .texto {
+      font-size: 1.6rem;
+      color: #fff;
+      max-width: 700px;
+      white-space: pre-line;
+      border-right: 2px solid rgba(255,255,255,0.6);
+      animation: cursor 0.8s infinite, brillo 2s infinite alternate;
+      padding: 20px;
+      text-shadow: 0 0 6px #fff, 0 0 12px #b5d9ff, 0 0 25px #80bfff;
+    }
+
+    @keyframes cursor {
+      0%, 100% { border-color: transparent; }
+      50% { border-color: #fff; }
+    }
+
+    @keyframes brillo {
+      from { text-shadow: 0 0 6px #fff, 0 0 12px #80bfff; }
+      to { text-shadow: 0 0 15px #fff, 0 0 35px #80bfff, 0 0 60px #cce6ff; }
+    }
+
+    .estrella {
+      position: absolute;
+      color: #fff;
+      font-size: 15px;
+      animation: caer 7s linear infinite;
+      opacity: 0.8;
+    }
+
+    @keyframes caer {
+      0% { transform: translateY(-10vh); opacity: 1; }
+      100% { transform: translateY(110vh); opacity: 0; }
+    }
+
+    .sobre {
+      margin-top: 20px;
+      width: 200px;
+      height: 120px;
+      background: #fff;
+      border-radius: 10px;
+      transform: scale(0);
+      opacity: 0;
+      transition: all 1s ease-in-out;
+      cursor: pointer;
+      box-shadow: 0 0 20px #fff;
+    }
+
+    .sobre.abierto {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    .mensaje-final {
+      display: none;
+      position: absolute;
+      top: 40%;
+      font-size: 3rem;
+      color: #fff;
+      text-shadow: 0 0 15px #fff, 0 0 40px #80bfff, 0 0 70px #cce6ff;
+      animation: latir 1.5s infinite alternate;
+      text-align: center;
+    }
+
+    @keyframes latir {
+      from { transform: scale(1); opacity: 0.8; }
+      to { transform: scale(1.2); opacity: 1; }
+    }
+
+    /* Desvanecer carta */
+    .desvanecer {
+      animation: fadeOut 2s forwards;
+    }
+
+    @keyframes fadeOut {
+      to { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="texto" id="carta"></div>
+  <div class="sobre" id="sobre"></div>
+  <div class="mensaje-final" id="mensajeFinal"> TE AMO INFINITAMENTE <br>"Tú y yo juntos hoy y todos los días."</div>
+
+  <script>
+    const mensaje = `Quiero agradecer todo este tiempo que ha sido lleno de amor y risas, 
+días en los que me haces sentir especial; un año en el que todos los días te amo más, en los que pienso en nuestro futuro y me doy cuenta que todo es así, solo si se trata de ti. 
+Ten por seguro que cada día te elijo a ti, te elegí y te elegiría hasta el final. 
+Es imposible no sentir mariposas incluso pensándote, ese es tu efecto en mí. 
+
+Es bonito que ambos construyamos la relación cada día, haces que cada día que pase sea muy feliz, amándote, pensándote y queriéndote... 
+
+Estar contigo hace que olvide todo lo malo, 
+no importa la distancia porque eso no impide que te ame y me siga enamorando.`;
+
+    let i = 0;
+    function escribir() {
+      if (i < mensaje.length) {
+        document.getElementById("carta").innerHTML += mensaje.charAt(i);
+        i++;
+        setTimeout(escribir, 60);
+      } else {
+        setTimeout(() => {
+          document.getElementById("sobre").classList.add("abierto");
+        }, 1500);
+      }
+    }
+    escribir();
+
+    // Estrellitas cayendo
+    function crearEstrella() {
+      const estrella = document.createElement("div");
+      estrella.innerHTML = "✦";
+      estrella.classList.add("estrella");
+      estrella.style.left = Math.random() * window.innerWidth + "px";
+      estrella.style.fontSize = Math.random() * 20 + 10 + "px";
+      document.body.appendChild(estrella);
+      setTimeout(() => estrella.remove(), 7000);
+    }
+    setInterval(crearEstrella, 300);
+
+    // Abrir sobre -> mensaje final con desvanecer carta
+    document.getElementById("sobre").addEventListener("click", () => {
+      document.getElementById("carta").classList.add("desvanecer");
+      document.getElementById("sobre").classList.add("desvanecer");
+      setTimeout(() => {
+        document.body.style.background = "#000"; // fondo negro
+        document.getElementById("mensajeFinal").style.display = "block";
+      }, 2000);
+    });
+  </script>
+
+</body>
+</html>
